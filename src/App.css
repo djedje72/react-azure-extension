@@ -1,22 +1,57 @@
-.App {
-  text-align: center;
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  font-size: 75%;
+  min-width: 600px;
 }
 
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.dark, .dark .menu-buttons {
   color: white;
+  background-color: #333;
 }
 
-.App-link {
-  color: #09d3ac;
+.dark .pullRequest .repository {
+  color: #ffffffcc;
+}
+
+.dark .menu-buttons button.selected {
+  background-color: #555;
+}
+
+.dark .pullRequest {
+  border-top: 1px solid #555;
+}
+
+.dark .pullRequest .details .branchesInfo, .dark .pullRequest .durationInfo, .dark .fa-comments, .dark .fa-bars, .dark .menu-buttons button:hover, .dark .comments {
+  color: #e0e0e0;
+}
+
+.dark .spinner>div {
+  background-color: #e0e0e0;
+}
+
+.dark .prtitle {
+  color: #FFF;
+}
+
+.dark .pullRequest:hover, .dark .menu-buttons button:not(.selected):hover {
+  color: #98C6FF;
+  background-color: #444;
+}
+
+.dark .draft {
+  color: black;
+  background-color: #98C6FF;
+}
+
+.dark .menu-buttons button, .dark .menu-buttons button.selected {
+  color: #98C6FF;
+}
+
+.dark .review-waiting {
+  background-color: #ffff0028;
+}
+
+.dark .review-rejected {
+  background-color: #FF000028;
 }

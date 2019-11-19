@@ -1,0 +1,112 @@
+button {
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0px;
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 16px;
+	background: #004692;
+	padding: 8px 20px 10px 20px;
+	text-decoration: none;
+	border: none;
+	height: 43px;
+}
+
+button:not(.selected):hover {
+	background: #3cb0fd;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+button[disabled] {
+	background: #cccccc;
+}
+
+button[disabled]:hover {
+	background: #cccccc;
+	cursor: default;
+}
+
+
+.menu-buttons {
+	display: table;
+	width: 100%;
+	height: 45px;
+	margin-bottom: 0px;
+	position: sticky;
+	top: 0;
+	background-color: #fff;
+	border-bottom: 1px solid #8da9aa;
+}
+
+.menu-buttons button {
+	font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Ubuntu, Arial,
+		sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+	color: #333;
+}
+
+.menu-buttons button.selected {
+	color: #fff;
+	/* border-bottom: 2px solid #fff; */
+	background-color: #0078d4;
+}
+
+.menu-buttons button:focus {
+	outline: none;
+}
+
+.menu-buttons button:not(.selected):hover {
+	outline: none;
+	background-color: #dff2ff;
+	color: #0078d4;
+}
+
+.menu-buttons button {
+	background-color: inherit;
+	height: 45px;
+	color: #0078d4;
+}
+
+.menu-buttons .list-buttons {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.menu-icon {
+	font-size: 1em !important;
+}
+
+.menu-buttons .settings-button {
+	color: #0e0d19;
+    padding: 8px 10px 10px 10px;
+}
+
+.list-buttons__button {
+	display: flex;
+	align-items: center;
+}
+
+.icons-status {
+	font-size: 1.5em;
+}
+
+.fa-sun,
+.fa-moon
+{
+	cursor: pointer;
+    font-size: 25px;
+}
+.fa-sun {
+	color: #ffe000;
+}
+.app:not(.dark) .fa-sun {
+	display: none;
+}
+
+.fa-moon {
+    color: #0e0d19;
+}
+.app.dark .fa-moon {
+	display: none;
+}
