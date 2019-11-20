@@ -1,10 +1,12 @@
 import React from 'react';
 import './PullRequests.css';
 import Menu from '../menu';
+import PullRequest from './pullRequest';
 
 export default () => {
     return (<>
         <Menu/>
+        {[1,2,3].map(e => <PullRequest key={e}/>)}
         {/* <div>
             <div class="pullRequest" data-ng-show="!$ctrl.showSettings && pr.isVisible" data-ng-class="$ctrl.reviewClass(pr)"
                 data-ng-repeat="pr in $ctrl.pullRequests | orderBy:$ctrl.valueOfDate">
