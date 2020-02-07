@@ -1,12 +1,21 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './PullRequests.css';
 import Menu from '../menu';
 import PullRequest from './pullRequest';
+import {getPullRequests} from "azure/index";
 
 export default () => {
+    const [pullRequests, setPullRequests] = useState({"all": []});
+    useEffect(() => {
+        (async() => {
+            const prs = await getPullRequests();
+            console.log(prs);
+            setPullRequests(prs);
+        })();
+    }, []);
     return (<>
         <Menu/>
-        {[1,2,3].map(e => <PullRequest key={e}/>)}
+        {pullRequests.all.map(e => <PullRequest key={e.pullRequestId}/>)}
         {/* <div>
             <div class="pullRequest" data-ng-show="!$ctrl.showSettings && pr.isVisible" data-ng-class="$ctrl.reviewClass(pr)"
                 data-ng-repeat="pr in $ctrl.pullRequests | orderBy:$ctrl.valueOfDate">

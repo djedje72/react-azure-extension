@@ -1,5 +1,6 @@
 module.exports = {
+    "extends": "react-app",
     "globals": {
-        "browser": true
+        "browser": "readonly"
     }
 };

@@ -1,12 +1,14 @@
-import defer from "../defer";
 import { detect } from "detect-browser";
+import moment from "moment";
+
+import defer from "../defer";
 import chromeOauth from "./oauth.chrome.config";
 import firefoxOauth from "./oauth.firefox.config";
 const detectedBrowser = detect();
 const isChrome = detectedBrowser && detectedBrowser.name === "chrome";
 const config = isChrome ? chromeOauth : firefoxOauth;
 
-const redirectUri = browser.identity.getRedirectURL("token");
+const redirectUri = "";//browser.identity.getRedirectURL("token");
 
 let initFlowDeffered = null;
 const initFlow = async() => {

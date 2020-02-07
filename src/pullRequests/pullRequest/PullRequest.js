@@ -1,15 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import './PullRequest.css';
 import PullRequestCreator from "./pullRequestCreator";
 import PullRequestReviewers from "./pullRequestReviewers";
-import {getPullRequests} from "../../azure";
 
 export default () => {
-    useEffect(() => {
-        (async() => {
-            console.log(await getPullRequests());
-        })();
-    }, []);
     return (
         <div className="pullRequest">
             <div className="pullRequest-details">

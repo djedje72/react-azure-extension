@@ -1,7 +1,9 @@
-import oauthFetch from "../oauth/index";
-import {getUrl, getDomainUrl, setCurrentDomain, getCurrentDomain} from "../settings/index";
-import {getCurrentMember} from "../member/index";
-import defer from "../defer";
+import moment from "moment";
+
+import oauthFetch from "oauth/oauthFetch";
+import {getUrl, getDomainUrl, setCurrentDomain, getCurrentDomain} from "settings/settings.service";
+import {getCurrentMember, clearAvatarCache} from "member/member.service";
+import defer from "defer/index";
 
 export const initialize = defer();
 export const loginInitialize = defer();
@@ -29,7 +31,7 @@ const getToApprovePullRequests = async(pullRequests) => {
                     return !approved(reviewer.vote);
                 });
 
-                if (denies.length > 0 || approves.length === 0 &&  teamPullRequest.length > 0) {
+                if (denies.length > 0 || (approves.length === 0 &&  teamPullRequest.length > 0)) {
                     return true;
                 }
             }
@@ -91,7 +93,7 @@ function processPolicies(fullPr) {
     });
 }
 
-const getFullPullRequest = async(pr) => {
+export const getFullPullRequest = async(pr) => {
     const fullPr = await oauthFetch({
         method: "GET",
         url: pr.url
@@ -130,22 +132,31 @@ function getPolicyResult(pr) {
     });
 }
 
-export const getPullRequests = () => {
-    return getPullRequestsList().then(function(pullRequests) {
-        let promises = [];
-        let fullPullRequests = [];
-        pullRequests.forEach((pr) => {
-            promises.push(getFullPullRequest(pr).then((fullPr) => {
-                //getVisits(fullPr).then(({newCommentsCount}) => console.log(newCommentsCount));
-                fullPullRequests.push(fullPr);
-            }));
-        });
-        return Promise.all(promises).then(async() => ({
-            "all": fullPullRequests,
-            "toApprove": await getToApprovePullRequests(fullPullRequests),
-            "mine": await getMinePullRequests(fullPullRequests)
-        }));
-    });
+// export const getPullRequests = () => {
+//     return getPullRequestsList().then(function(pullRequests) {
+//         let promises = [];
+//         let fullPullRequests = [];
+//         pullRequests.forEach((pr) => {
+//             promises.push(getFullPullRequest(pr).then((fullPr) => {
+//                 //getVisits(fullPr).then(({newCommentsCount}) => console.log(newCommentsCount));
+//                 fullPullRequests.push(fullPr);
+//             }));
+//         });
+//         return Promise.all(promises).then(async() => ({
+//             "all": fullPullRequests,
+//             "toApprove": await getToApprovePullRequests(fullPullRequests),
+//             "mine": await getMinePullRequests(fullPullRequests)
+//         }));
+//     });
+// };
+
+export const getPullRequests = async() => {
+    const pullRequests = await getPullRequestsList();
+    return {
+        "all": pullRequests,
+        "toApprove": await getToApprovePullRequests(pullRequests),
+        "mine": await getMinePullRequests(pullRequests)
+    };
 };
 
 export const setCredentials = async(credentials) => {
@@ -202,22 +213,22 @@ export const getProjects = async() => {
     return value;
 };
 
-async function getVisits(pr, field) {
-    return oauthFetch({
-        method:"POST",
-        url: `${await getDomainUrl()}/_apis/visits/artifactStatsBatch`,
-        params: {
-            "api-version": "5.0-preview.1",
-            "includeUpdatesSinceLastVisit": "true"
-        },
-        data: [
-            {
-                "discussionArtifactId": `vstfs:///CodeReview/ReviewId/${pr.repository.project.id}%2F${pr["codeReviewId"]}`,
-                "artifactId": pr.artifactId.replace("%2f", "%2F")
-            }
-        ]
-    });
-}
+// async function getVisits(pr, field) {
+//     return oauthFetch({
+//         method:"POST",
+//         url: `${await getDomainUrl()}/_apis/visits/artifactStatsBatch`,
+//         params: {
+//             "api-version": "5.0-preview.1",
+//             "includeUpdatesSinceLastVisit": "true"
+//         },
+//         data: [
+//             {
+//                 "discussionArtifactId": `vstfs:///CodeReview/ReviewId/${pr.repository.project.id}%2F${pr["codeReviewId"]}`,
+//                 "artifactId": pr.artifactId.replace("%2f", "%2F")
+//             }
+//         ]
+//     });
+// }
 
 export const getSuggestionForUser = () => {
     return getAllSuggestions()
@@ -307,6 +318,7 @@ function getAllSuggestions() {
 }
 
 export const init = async() => {
+    clearAvatarCache();
     const domainToUse = getCurrentDomain();
     if (domainToUse) {
         checkLogin().then(() => {
